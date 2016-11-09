@@ -1,5 +1,9 @@
-import numpy as np
-
+try:
+	import numpy as np
+	import re
+except ImportError,e:
+	print "Module not installed"
+	print e
 
 # Matrix for transition probability of 26 characters
 M = np.array([[0] * 26] * 26)
@@ -7,16 +11,17 @@ M = np.array([[0] * 26] * 26)
 
 # input file from user
 file_name = raw_input("Enter the file name")
-file_object = open(filename,'r')
+f = open(file_name.strip(),'r').read()
 
-# taking input text from the file
-input_text = file_object.read()
 
-# removing the whitespaces
-input_text.replace(" ","")
+# removing the punctuations
+input_text = re.sub(r'[,:.;\']',r' ',f)
+
+# removing whitespaces
+newlist = input_text.replace(" ","")
 
 #splitting the replaced input text into individual characters
-formed_list = list(input_text)
+formed_list = list(newlist)
 
 
 #Counting the frequency of transition from each alphabet to every other alphabet using transition matrix
@@ -38,9 +43,3 @@ for i in range(26):
 	for j in range(26):
 		if counter[i] != 0:
 			P[i,j] = M[i,j] / counter[i]
-		
-		
-		
-
-
-
